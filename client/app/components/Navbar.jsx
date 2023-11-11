@@ -15,7 +15,7 @@ const Navbar = () => {
   const isloggedIn = false
   return (
     <header>
-      <nav className="navbar p-0 bg-slate-950 h-16 items-center">
+      <nav className=" navbar p-0 bg-slate-950 h-16 items-center">
         <Link href="/" className={`${orbitron.className} px-4 h-20 text-center  `}>
           <p className="text-white">ShareSculpt</p>
 
@@ -58,7 +58,7 @@ const Navbar = () => {
                 </li>
 
               </ul>
-            </div> : (<div className='w-48 flex justify-around'>
+            </div> : (<div className='w-48 flex gap-2'>
               <button className='text-black bg-white py-2 px-3 rounded-lg'>Login</button>
               <button className='text-black bg-white py-2 px-3 rounded-lg'>Register</button>
             </div>)
