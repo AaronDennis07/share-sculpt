@@ -1,7 +1,7 @@
 import PostCards from "../components/PostCards"
 export default function Home() {
   return (
-    <main className=" ml-16">
+    <main className=" ml-16 ">
       {/* <article className="flex items-center  w-7/12    border-[1px] rounded-xl border-slate-900 p-4 mt-12">
         <div>
           <div id="head" className="flex gap-3">
@@ -102,7 +102,7 @@ export default function Home() {
         </div>
         <Image className="w-36 h-36 " src='/cover.jpeg' height={150} width={150} />
       </article> */}
-      <PostCards count={10}/>
+      <PostCards count={5}/>
     </main>
   )
 }
