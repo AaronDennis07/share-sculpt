@@ -1,10 +1,12 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import Image from "next/image"
 import Link from 'next/link'
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"
-const PostCard = () => {
 
-  const isEditable = true
+const PostCard = ({isEditable}) => {
+
+  // const [isEditable,setIsEditable] = useState(true)
 
   return (
     <section>
