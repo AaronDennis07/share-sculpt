@@ -1,14 +1,17 @@
+require("express-async-errors")
 const express = require('express')
 const app = express()
-const {connectDB} = require('./db')
+const connectDB = require('./db/connectDB')
+const authRoutes = require('./routes/authRoutes')
+const errorHandlerMiddleware = require('./middleware/errorhandler')
+app.use(express.json())
 if(process.env.NODE_ENV==='DEV'){
     require('dotenv').config()
-   
 }
     
-app.get("/",(req,res)=>{
-    return res.json("hi")
-})
+app.use('/api/v1/auth',authRoutes)
+
+app.use(errorHandlerMiddleware)
 
 connectDB(process.env.DATABASE_URL)
     .then(()=>{
