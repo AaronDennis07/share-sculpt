@@ -11,7 +11,11 @@ const blogSchema = new mongoose.Schema({
     },
     tag: {
         type: String,
-        required: [true, 'Tag must not be given']
+        required: [true, 'Tag must  be given']
+    },
+    coverImg:{
+        type:String,
+        required:[true,'Cover image must be given']
     },
     author: {
         type: mongoose.Schema.ObjectId,

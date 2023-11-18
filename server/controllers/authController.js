@@ -27,7 +27,8 @@ const login = async (req, res) => {
 
 
     return res.status(StatusCodes.OK).json({
-        user: username
+        user: username,
+        id:foundUser.id
     })
 }
 
