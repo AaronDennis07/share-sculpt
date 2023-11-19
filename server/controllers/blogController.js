@@ -1,5 +1,7 @@
+const { default: mongoose } = require('mongoose')
+const { BadRequestError, UnauthorizedError } = require('../errors')
 const Blog = require('../models/blogModel')
-const { handleCoverImageUpload } = require('../utils')
+const { handleCoverImageUpload } = require('../utils/imageUpload')
 const { StatusCodes } = require('http-status-codes')
 
 const getAllBlogs = async (req, res) => {
@@ -10,7 +12,6 @@ const getAllBlogs = async (req, res) => {
 }
 
 const getBlogById = async (req, res) => {
-  console.log(req.params.id)
   const { id } = req.params
   const blog = await Blog.findById(id )
   return res.status(StatusCodes.OK).json({
@@ -19,9 +20,8 @@ const getBlogById = async (req, res) => {
 }
 
 const getBlogsByAuthor = async (req, res) => {
-  const { author } = req.query
   const blogs = await Blog.find({
-    author
+    author: mongoose.SchemaTypes.ObjectId(req.user.id)
   })
   return res.status(StatusCodes.OK).json({
     blogs
@@ -29,45 +29,52 @@ const getBlogsByAuthor = async (req, res) => {
 }
 
 const addBlog = async (req, res) => {
-  const { author, description, tag, title } = req.body
-
+  const {  description, tag, title } = req.body
   const b64 = Buffer.from(req.file.buffer).toString("base64");
   let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
   const { url } = await handleCoverImageUpload(dataURI);
-console.log(author)
   const newblog = {
-    author,
+    author:req.user.id,
     description,
     title,
     tag,
     coverImg: url
   }
+  const result = await Blog.create(newblog)
 
-  await Blog.create(newblog)
-
-  res.json(newblog);
+  res.json(result);
 }
 
 const updateBlog = async (req, res) => {
-  const { id,description, tag, title } = req.body
+  const {id} = req.params
+  const {description, tag, title} = req.body
+  
+  const foundBlog = await Blog.findById(id)
 
-  const updatedBlog = await Blog.findByIdAndUpdate(id, {
+  if(!foundBlog) throw new BadRequestError('Invalid blog id')
+
+  if(foundBlog.author._id.toString()!== req.user?.id) throw new UnauthorizedError('you do not have permission to access this resource')
+  const updatedBlog = await Blog.updateOne({
+    _id:foundBlog._id
+  }, {
     description,
     tag,
     title
-  },{new:true}
+  }
   )
-
   res.status(StatusCodes.OK).json({
-    title: updatedBlog.title,
-    description: updatedBlog.description,
-    tag: updatedBlog.tag
+    msg:'Blog successfully updated'
   })
 }
 
 const deleteBlog = async (req, res) => {
-  const { id } = req.body
-  await Blog.findByIdAndDelete(id)
+  const {id} = req.params
+  
+  const foundBlog = await Blog.findById(id)
+  if(!foundBlog) throw new BadRequestError('Invalid blog id')
+  if(foundBlog.author._id.toString()!== req.user?.id) throw new UnauthorizedError('you do not have permission to access this resource')
+
+  await Blog.deleteOne({_id:foundBlog._id})
   res.status(StatusCodes.OK).json({
     msg: 'successfully deleted'
   })

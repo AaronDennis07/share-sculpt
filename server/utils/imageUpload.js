@@ -10,7 +10,7 @@ cloudinary.config({
   });
 
 const handleProfileImageUpload = async(file)=>{
-    console.log(process.env.API_KEY)
+
    
     const res = await cloudinary.uploader.upload(file,{
         resource_type:'image',
@@ -21,7 +21,7 @@ const handleProfileImageUpload = async(file)=>{
 
 
 const handleCoverImageUpload = async(file)=>{
-    console.log(process.env.API_KEY)
+
    
     const res = await cloudinary.uploader.upload(file,{
         resource_type:'image',

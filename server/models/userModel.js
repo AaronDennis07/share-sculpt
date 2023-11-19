@@ -5,11 +5,17 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: [true, 'user must not be empty'],
-    max: [20, 'username must not exceed 20 characters']
+    max: [20, 'username must not exceed 20 characters'],
+    unique:true
   },
   password: String,
+  profile_img:{
+    type:String,
+    default:'https://res.cloudinary.com/aaron07/image/upload/v1700406450/sharesculpt/users/default_profile_img_jmcg2j.jpg'
+  },
   email: {
     type: String,
+    unique:true,
     validate: {
       validator: function (v) {
         return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v);
@@ -32,10 +38,7 @@ userSchema.pre('save', async function () {
 })
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
-  console.log(candidatePassword)
-  console.log(this.password)
   const isMatch = await bcrypt.compare(candidatePassword,this.password)
-  console.log(isMatch)
   return isMatch
 }
 

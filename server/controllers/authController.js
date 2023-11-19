@@ -1,6 +1,7 @@
 const User = require('../models/userModel')
 const CustomApiError = require('../errors')
 const { StatusCodes } = require('http-status-codes')
+const { createJWT } = require('../utils/jwt')
 
 const register = async (req, res) => {
     const { username, email, password } = req.body
@@ -25,10 +26,13 @@ const login = async (req, res) => {
     if (!isMatch)
         throw new CustomApiError.BadRequestError("invalid credentials")
 
-
-    return res.status(StatusCodes.OK).json({
-        user: username,
+    const token = await  createJWT({
+        username,
         id:foundUser.id
+    })
+    return res.status(StatusCodes.OK).json({
+        username,
+        token
     })
 }
 
