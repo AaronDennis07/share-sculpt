@@ -11,9 +11,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="min-h-screen max-h-fit w-screen bg-slate-200">
         <Navbar />
-        <EditContext.Provider>
           {children}
-        </EditContext.Provider>
       </body>
     </html>
   )

@@ -4,10 +4,9 @@ import Image from "next/image"
 import Link from 'next/link'
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"
 
-const PostCard = ({isEditable}) => {
+const PostCard = () => {
 
-  // const [isEditable,setIsEditable] = useState(true)
-
+  const [isEditable, setIsEditable] = useState(true)
   return (
     <section>
       <Link href="/posts/213/show" >
@@ -32,12 +31,16 @@ const PostCard = ({isEditable}) => {
               {isEditable &&
                 <>
                   <Link href="/posts/123/edit" className='mt-10 hover:font-bold hover:opacity-100 flex items-center w-20   justify-evenly pl-4'>
-                    <AiOutlineEdit />
-                    <p className='text-sm'>Edit</p>
+                    <>
+                      <AiOutlineEdit />
+                      <p className='text-sm'>Edit</p>
+                    </>
                   </Link>
                   <Link href="/posts/123/edit" className='mt-10 hover:font-bold flex items-center w-20 justify-evenly '>
-                    <AiOutlineDelete />
-                    <p className='text-sm'>Delete</p>
+                    <>
+                      <AiOutlineDelete />
+                      <p className='text-sm'>Delete</p>
+                    </>
                   </Link>
                 </>
               }
