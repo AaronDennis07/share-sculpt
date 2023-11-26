@@ -12,6 +12,8 @@
     "@blocknote/core": "^0.9.6",
     "@blocknote/react": "^0.9.6",
     "@hookform/error-message": "^2.0.1",
+    "axios": "^1.6.2",
+    "iron-session": "^8.0.1",
     "next": "14.0.1",
     "react": "^18",
     "react-dom": "^18",

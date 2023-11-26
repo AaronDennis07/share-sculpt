@@ -3,9 +3,10 @@ import React, { useState } from 'react'
 import Image from "next/image"
 import Link from 'next/link'
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"
+import { useRouter } from 'next/navigation'
 
 const PostCard = () => {
-
+  const router = useRouter()
   const [isEditable, setIsEditable] = useState(true)
   return (
     <section>
@@ -25,26 +26,10 @@ const PostCard = () => {
               </p>
 
             </div>
-            <div className='flex items-center'>
+      
 
               <p className="pl-2 text-xs font-medium mt-10">Backend Development</p>
-              {isEditable &&
-                <>
-                  <Link href="/posts/123/edit" className='mt-10 hover:font-bold hover:opacity-100 flex items-center w-20   justify-evenly pl-4'>
-                    <>
-                      <AiOutlineEdit />
-                      <p className='text-sm'>Edit</p>
-                    </>
-                  </Link>
-                  <Link href="/posts/123/edit" className='mt-10 hover:font-bold flex items-center w-20 justify-evenly '>
-                    <>
-                      <AiOutlineDelete />
-                      <p className='text-sm'>Delete</p>
-                    </>
-                  </Link>
-                </>
-              }
-            </div>
+           
           </div>
           <Image className="w-36 h-36 " src='/cover.jpeg' height={150} width={150} />
         </article>

@@ -1,12 +1,31 @@
+"use client"
+
 import React from 'react'
 import Image from 'next/image'
-
+import { AiOutlineEdit, AiOutlineDelete,AiFillEdit,AiFillDelete } from "react-icons/ai"
+import { useRouter } from 'next/navigation'
 const ShowBlog = () => {
+    const router = useRouter()
     return (
         <section className='w-[70%] mx-auto text-black'>
             <h1 className='text-4xl text-black text-center font-bold my-4'>How to use vite to create react app</h1>
-            <Image className='w-[600px] h-[400px] mx-auto my-4' height={400} width={600} src="/show.jpg" />
-            <p className='text-lg font-bold'>Posted By:  Aaron Dennis</p>
+            <Image className='w-[600px] h-[400px] mx-auto mb-8' height={400} width={600} src="/show.jpg" />
+            <div className='flex items-center gap-4'>
+                <p className='text-xl font-bold'>Posted By:  Aaron Dennis</p>
+                <span onClick={()=>router.push('/posts/123/edit')} className='cursor-pointer hover:underline underline-offset-2 hover:font-bold hover:opacity-100 flex items-center w-20   justify-evenly pl-4'>
+                    <>
+                    <p className='text-lg'><AiFillEdit /></p>
+                      <p  className='text-lg'>Edit</p>
+                    </>
+                  </span>
+                  <span className='cursor-pointer hover:underline underline-offset-2 text-lg hover:font-bold hover:opacity-100 flex items-center w-20   justify-evenly pl-4'>
+                    <>
+                      <p className='text-lg'><AiFillDelete /></p>
+                      <p  className='text-lg'>Delete</p>
+                    </>
+                  </span>
+
+            </div>
             <p className='text-lg mt-4'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laborum et repellat! Libero obcaecati cumque quidem, minima nesciunt reprehenderit labore nulla tempore quisquam sequi harum ea voluptatem eligendi ratione inventore.
                 Aliquid nihil libero aspernatur non, maiores quod veritatis exercitationem saepe aperiam laudantium quaerat id. Itaque laborum velit atque, ipsa est optio libero nesciunt? Ex vero tempora alias repudiandae nesciunt est!
                 Minus fugiat nulla optio eum sit reiciendis iusto, temporibus et asperiores deserunt! Suscipit eos repellat ea, error exercitationem corrupti sit aliquid dolorem, blanditiis quis aliquam totam nihil tempore quidem illo.
