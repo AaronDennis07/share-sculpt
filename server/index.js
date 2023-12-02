@@ -10,11 +10,15 @@ const errorHandlerMiddleware = require('./middleware/errorhandler')
 const userRoutes = require('./routes/userRoutes')
 
 app.use(express.json())
+const whitelist = ['http://localhost:3000/']
 app.use(cors())
 if(process.env.NODE_ENV==='DEV'){
     require('dotenv').config()
 }
     
+
+
+
 app.use('/api/v1/auth',authRoutes)
 app.use('/api/v1/blogs',blogRoutes)
 app.use('/api/v1/users',userRoutes)

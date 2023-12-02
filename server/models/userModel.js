@@ -23,10 +23,10 @@ const userSchema = new mongoose.Schema({
       message: props => `${props.value} is not a valid email!`
     },
   },
-  blogs: {
-    type: [mongoose.Schema.ObjectId],
+  blogs: [{
+    type: mongoose.Schema.ObjectId,
     ref: 'Blog',
-  }
+  }]
 })
 
 

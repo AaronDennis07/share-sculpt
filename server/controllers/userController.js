@@ -2,6 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const User = require("../models/userModel");
 const { handleProfileImageUpload } = require("../utils/imageUpload");
 const { BadRequestError } = require("../errors");
+const blogModel = require("../models/blogModel");
 
 const uploadProfileImg = async (req, res) => {
     const b64 = Buffer.from(req.file.buffer).toString("base64");
@@ -39,8 +40,17 @@ const checkUsernameUnique = async (req, res) => {
     })
 }
 
+const getMe = async(req,res)=>{
+    const user = await User.findById(req.user.id).populate('blogs').exec()
+   
+    return res.status(200).json({
+        user:user
+    })
+}
+
 module.exports = {
     uploadProfileImg,
     checkEmailUnique,
-    checkUsernameUnique
+    checkUsernameUnique,
+    getMe
 }

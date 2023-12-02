@@ -1,18 +1,55 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { ErrorMessage } from "@hookform/error-message"
-import { useParams, useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/router'
-import { login } from '../actions'
-import { useFormState } from "react-dom";
+import { useAuth } from '../context/AuthProvider'
+import { usePathname, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+
 const Login = ({ registered }) => {
-    const [state, formAction] = useFormState(login, { error: null })
-    const { register, formState: { errors, touchedFields } } = useForm({
+    const router = useRouter()
+    const pathname = usePathname()
+    const [subError,setSubError] = useState({error:null})
+    const {setAuth,auth,redirect,setRedirect} = useAuth()
+    const { register, formState: { errors, touchedFields },handleSubmit } = useForm({
         mode: 'onBlur' || 'onSubmit'
     })
 
+    const onSubmit = async(data,event)=>{
+        
+        try {
+            const response = await fetch('http://localhost:8000/api/v1/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    
+                },
+                body: JSON.stringify(data),
+                
+            })
+            const parsedResponse= await response.json()
+            if (!response.ok) {
+                console.log(parsedResponse.msg);   
+                setSubError({error:parsedResponse.msg})
+                return 
+            }
+            console.log(parsedResponse.token)
+            setAuth({
+                username:parsedResponse.username,
+                token:parsedResponse.token,
+                isAuthenticated:true
+            })
+            if(redirect)
+                router.back()
+            else 
+                router.push('/')
+            setRedirect(false)
+        } catch (error) {
+            setSubError({error:'Something went wrong'})
+        }
+    }
+ 
     return <>
         {registered && (
             <div role="alert" className="alert alert-success w-1/4 mx-auto my-4">
@@ -20,19 +57,23 @@ const Login = ({ registered }) => {
                 <span>Registered Successfully!</span>
             </div>
         )}
+        {redirect && (<div role="alert" className="alert alert-error  w-1/4 mx-auto my-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span>Please login to continue</span>
+            </div>)}
 
         <h1 className="text-center  font-bold text-4xl my-5">Login</h1>
 
         <section className=" w-1/4 mx-auto max-h-fit" >
-            {state?.error && (<div role="alert" className="alert alert-error mb-4">
+            {subError.error && (<div role="alert" className="alert alert-error mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                <span>{state.error}</span>
+                <span>{subError.error}</span>
             </div>)}
-            <form className="w-full" action={formAction}>
+            <form className="w-full" action='POST' onSubmit={handleSubmit(onSubmit)}>
                 <div className=" mb-4">
                     <label htmlFor="username" className=" text-sm block mr-7 mb-2 w-full">Username</label>
                     <input type="text" id="username" name="username" className={` input input-bordered 
-                        ${errors.username && 'input-error'}  ${(touchedFields.username && !errors.username) && 'input-success'} w-full `} name="username" id="username"  {...register('username', {
+                        ${errors.username && 'input-error'}  ${(touchedFields.username && !errors.username) && 'input-success'} w-full `}    {...register('username', {
                         required: 'Username is required',
                     })}
 
@@ -42,7 +83,7 @@ const Login = ({ registered }) => {
                 <div className="mb-4">
                     <label htmlFor="password" className="text-sm block mr-7 mb-2 w-full">Password</label>
                     <input type="password" id="password" name="password" className={` input input-bordered 
-                        ${errors.password && 'input-error'}  ${(touchedFields.password && !errors.password) && 'input-success'} w-full `} name="password" id="title" {...register('password', {
+                        ${errors.password && 'input-error'}  ${(touchedFields.password && !errors.password) && 'input-success'} w-full `} {...register('password', {
                         required: 'Password is required.',
                     })}
 

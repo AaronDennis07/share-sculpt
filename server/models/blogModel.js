@@ -18,7 +18,7 @@ const blogSchema = new mongoose.Schema({
         required:[true,'Cover image must be given']
     },
     author: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: [true, 'Author must be given']
     }

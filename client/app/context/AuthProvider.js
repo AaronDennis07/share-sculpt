@@ -1,15 +1,34 @@
-import { createContext,useState } from "react";
+"use client"
+
+import { useState, createContext, useContext } from "react";
 
 const AuthContext = createContext({})
 
-export const AuthProvider = ({children})=>{
-    const [auth,setAuth] = useState({})
-    const [persist,setPersist] = useState(JSON.parse(localStorage.getItem("persist"))||false)
+export const useAuth = ()=>{
+    return useContext(AuthContext)
+}
+
+const AuthProvider = ({ children }) => {
+    const [auth, setAuth] = useState({
+        username: '',
+        token: '',
+        isAuthenticated: false
+    })
+    const [redirect,setRedirect] = useState(null)
+    const logout = ()=>{
+        setAuth(
+            {
+                username: '',
+                token: '',
+                isAuthenticated: false
+            }
+        )
+    }
     return (
-        <AuthContext.Provider value={{auth,setAuth,persist,setPersist}}>
+        <AuthContext.Provider value={{auth,setAuth,redirect,setRedirect,logout}}>
             {children}
         </AuthContext.Provider>
     )
 }
 
-export default AuthContext
+export default AuthProvider
