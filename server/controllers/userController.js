@@ -41,7 +41,7 @@ const checkUsernameUnique = async (req, res) => {
 }
 
 const getMe = async(req,res)=>{
-    const user = await User.findById(req.user.id).populate('blogs').exec()
+    const user = await User.findById(req.user.id).populate('blogs', '_id title tag cover_img description').exec()
    
     return res.status(200).json({
         user:user
