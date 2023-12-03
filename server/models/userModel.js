@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
   password: String,
   profile_img:{
     type:String,
-    default:'https://res.cloudinary.com/aaron07/image/upload/v1700406450/sharesculpt/users/default_profile_img_jmcg2j.jpg'
+    default:'https://res.cloudinary.com/aaron07/image/upload/v1701606560/default_profile_euuzuv.jpg'
   },
   email: {
     type: String,

@@ -7,13 +7,14 @@ import { useForm } from 'react-hook-form'
 import { ErrorMessage } from "@hookform/error-message"
 import { useAuth } from '../context/AuthProvider';
 import { revalidatePath } from 'next/cache';
+import { revalidateURL } from '../actions';
 
 const NewBlog = () => {
     const router = useRouter()
     const { auth } = useAuth()
   
     console.log(auth.token)
-    const { register, handleSubmit, formState: { errors, touchedFields } } = useForm({
+    const { register, handleSubmit, formState: { errors, touchedFields,isSubmitting } } = useForm({
         mode: 'onBlur' || 'onSubmit'
     })
     const [subError, setSubError] = useState({ error: null })
@@ -44,9 +45,12 @@ const NewBlog = () => {
                 return
             }
 
+            await revalidateURL('/')
             router.push(`/blogs/${parsedResponse._id}/show`)
-            
+          
+
         } catch (error) {
+            
             console.log(error)
             setSubError({ error: 'Something went wrong' })
         }
@@ -106,7 +110,7 @@ const NewBlog = () => {
 
                     <div className="w-full text-center my-6">
                         <button onClick={() => router.push('/')} type="button" className=" border-[1px] border-[rgba(27, 31, 35, .15)]  hover:bg-[#bb1a34] rounded-lg  bg-[#e62143] mx-3 text-lg text-[#ffffff] px-4 py-2 w-24">Cancel</button>
-                        <button type="submit" className=" text-lg  border-[1px] border-[rgba(27, 31, 35, .15)]  hover:bg-[#2c974b] rounded-lg  bg-[#2ea44f] mx-3 text-[#ffffff] px-4 py-2 w-24">Publish</button>
+                        <button type="submit" className={` text-lg  border-[1px] border-[rgba(27, 31, 35, .15)]  hover:bg-[#2c974b] rounded-lg ${!isSubmitting ? 'bg-[#2ea44f]' : 'bg-slate-500' }  mx-3 text-[#ffffff] px-4 py-2 w-32`}>{isSubmitting ? 'Publishing' :'Publish'}</button>
                     </div>
                 </form>
             </section>

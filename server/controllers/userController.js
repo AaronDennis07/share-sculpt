@@ -13,7 +13,8 @@ const uploadProfileImg = async (req, res) => {
     })
 
     return res.status(StatusCodes.OK).json({
-        msg: 'Image successfully uploaded'
+        msg: 'Image successfully uploaded',
+        url
     })
 }
 
@@ -41,7 +42,13 @@ const checkUsernameUnique = async (req, res) => {
 }
 
 const getMe = async(req,res)=>{
-    const user = await User.findById(req.user.id).populate('blogs', '_id title tag cover_img description').exec()
+    const user = await User.findById(req.user.id).populate('blogs', '_id title tag cover_img description').populate( {
+        path:'blogs',
+        populate:{
+            path:'author',
+            model:'User'
+        }
+    }).exec()
    
     return res.status(200).json({
         user:user

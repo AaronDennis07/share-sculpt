@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 
 const AuthContext = createContext({})
 
@@ -9,11 +9,23 @@ export const useAuth = ()=>{
 }
 
 const AuthProvider = ({ children }) => {
-    const [auth, setAuth] = useState({
-        username: '',
-        token: '',
-        isAuthenticated: false
-    })
+    let defaultState = null
+if (typeof window !== 'undefined') {
+  
+  const item =JSON.parse( localStorage.getItem('auth'))
+  if(item ) defaultState = item
+  else defaultState =  {
+    username: "",
+    token: "",
+    isAuthenticated: false,
+    profile_img:""
+}
+}
+
+    const [auth, setAuth] = useState(defaultState )
+
+    
+
     const [redirect,setRedirect] = useState(null)
     const logout = ()=>{
         setAuth(
@@ -23,6 +35,7 @@ const AuthProvider = ({ children }) => {
                 isAuthenticated: false
             }
         )
+       localStorage.removeItem('auth')
     }
     return (
         <AuthContext.Provider value={{auth,setAuth,redirect,setRedirect,logout}}>

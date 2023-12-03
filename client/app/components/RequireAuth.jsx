@@ -8,7 +8,7 @@ const RequireAuth = ({children}) => {
     const {auth,setRedirect} = useAuth()
     const router = useRouter()
     console.log(path)
-    if(!auth.token){
+    if(!auth?.token){
         setRedirect(true)
         redirect('/auth/login?redirect=true')
     }

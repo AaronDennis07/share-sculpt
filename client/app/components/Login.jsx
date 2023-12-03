@@ -15,7 +15,7 @@ const Login = ({ registered }) => {
     const { register, formState: { errors, touchedFields },handleSubmit } = useForm({
         mode: 'onBlur' || 'onSubmit'
     })
-
+    if(registered) setRedirect(false)
     const onSubmit = async(data,event)=>{
         
         try {
@@ -38,8 +38,17 @@ const Login = ({ registered }) => {
             setAuth({
                 username:parsedResponse.username,
                 token:parsedResponse.token,
-                isAuthenticated:true
+                isAuthenticated:true,
+                profile_img:parsedResponse.profile_img
             })
+            localStorage.setItem('auth',JSON.stringify(
+                {
+                    username:parsedResponse.username,
+                    token:parsedResponse.token,
+                    isAuthenticated:true,
+                    profile_img:parsedResponse.profile_img
+                }
+            ))
             if(redirect)
                 router.back()
             else 

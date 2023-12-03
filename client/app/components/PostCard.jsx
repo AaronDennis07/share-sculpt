@@ -9,9 +9,9 @@ const PostCard = ({ coverImg, description, author, title, tag,id,profile_img }) 
   const router = useRouter()
   const [isEditable, setIsEditable] = useState(true)
   return (
-    <section>
+    <section className='w-[42rem]'>
       <Link href={`/blogs/${id}/show`} >
-        <article className="grid grid-cols-4  w-7/12 text-black bg-white hover:bg-gray-300 hover:opacity-50   border-[1px] rounded-xl border-slate-900 p-4 mt-12">
+        <article className="grid grid-cols-4   text-black bg-white hover:bg-gray-300 hover:opacity-50   border-[1px] rounded-xl border-slate-900 p-4 mt-8">
           <div className='col-span-3'>
             <div id="head" className="flex gap-3">
               <Image className="w-12 h-12 rounded-full" src={profile_img} height={16 * 3} width={16 * 3} alt="user photo" />

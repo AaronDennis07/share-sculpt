@@ -15,18 +15,18 @@ const NavProf = () => {
       logout()
       router.push('/auth/login')
     }
-   return  auth.token ?
+   return  auth?.token ?
         (<div className="w-52 h-full flex items-center   dropdown dropdown-end relative">
           <label tabIndex={0} className="ml-2 btn btn-ghost btn-circle avatar mr-2">
             <div className=" rounded-full">
-              <Image src="/profile.jpg" height={45} width={45} />
+              <Image src={auth.profile_img} height={45} width={45} />
             </div>
           </label>
-          <p className='text-white'>Aaron Dennis</p>
+          <p className='text-white'>{auth.username}</p>
           <ul tabIndex={0} className="shadow-xl  text-slate-500 z-[1] p-2 top-full mt-1 menu menu-sm dropdown-content bg-base-100 rounded-box w-52 mr-4">
           
             <li>
-              <Link href="/user/profile" >
+              <Link href="/users/me" >
                 <span className="text-xl"><BsPerson /></span>
                 <span className="text-md">Profile</span>
               </Link>
@@ -39,7 +39,7 @@ const NavProf = () => {
             </li>
 
           </ul>
-        </div> ): (<div className='w-48 flex gap-2'>
+        </div> ): (<div className='w-52 flex gap-2 justify-end mr-8'>
           <Link href="/auth/login" className='text-black bg-white py-2 px-3 rounded-lg '>Login</Link>
           <Link href="/auth/register" className='text-black bg-white py-2 px-3 rounded-lg'>Register</Link>
         </div>)

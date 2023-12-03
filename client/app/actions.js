@@ -2,6 +2,7 @@
 import { notFound, redirect } from 'next/navigation'
 
 import {cookies, headers} from  'next/headers'
+import { revalidatePath } from 'next/cache'
 export const register = async(prevState, formData)=> {
     const data = Object.fromEntries(formData)
     try {
@@ -70,7 +71,7 @@ export const getCookie = (name)=>{
 export const getAllBlogs = async()=>{
     try {
         const response = await fetch(`http://localhost:8000/api/v1/blogs`,{
-            cache:'no-cache'
+            cache:'no-store'
         })
         const parsedResponse = await response.json()
         if (!response.ok) {
@@ -146,3 +147,6 @@ export const getBlogById = async(id)=>{
     
 }
 
+export const revalidateURL =async (url)=>{
+    revalidatePath(url)
+}

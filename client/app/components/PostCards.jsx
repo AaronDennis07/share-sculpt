@@ -1,9 +1,10 @@
 
 import React from 'react'
 import PostCard from './PostCard'
+import { test, test1 } from '../actions'
 
 
-const PostCards = ({count,blogs}) => {
+const PostCards = ({blogs}) => {
 
     return (
     <>

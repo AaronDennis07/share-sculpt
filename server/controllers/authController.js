@@ -32,7 +32,8 @@ const login = async (req, res) => {
     })
     return res.status(StatusCodes.OK).json({
         username,
-        token
+        token,
+        profile_img:foundUser.profile_img
     })
 }
 

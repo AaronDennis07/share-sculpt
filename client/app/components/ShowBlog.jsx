@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { AiOutlineEdit, AiOutlineDelete,AiFillEdit,AiFillDelete } from "react-icons/ai"
 import { useRouter } from 'next/navigation'
 import { useAuth } from '../context/AuthProvider'
+import { revalidateURL } from '../actions'
 const ShowBlog = ({blog}) => {
   const {auth} = useAuth()
   const [subError, setSubError] = useState({ error: null })
@@ -24,7 +25,7 @@ const ShowBlog = ({blog}) => {
           setSubError({ error: parsedResponse.msg })
           return
       }
-      
+      await revalidateURL('/')
       router.push(`/`)
       
   } catch (error) {
